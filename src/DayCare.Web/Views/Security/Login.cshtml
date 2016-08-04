@@ -1,0 +1,51 @@
+﻿@model LoginViewModel
+<div class="login-container">
+
+    <div>
+        <div id="login-page" class="row">
+            <div class="col s12 z-depth-4 card-panel">
+                <form class="login-form" asp-route="defaultRoute" asp-route-controller="Home" asp-route-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div class="row">
+                        <div class="input-field col s12 center">
+                            <p class="center login-form-text">Enter Your Credentials</p>
+                            <div asp-validation-summary="All" class="text-danger">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12 ">
+                            <div class="prefix">
+                                <i class="material-icons dp48">perm_identity</i>
+                            </div>
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" />
+                            <span asp-validation-for="Email" class="right"></span>
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <div class="prefix">
+                                <i class="material-icons dp48">lock_outline</i>
+                            </div>
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" type="password" />
+                            <span asp-validation-for="Password" class="right"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m12 l12  login-text">
+                            <input asp-for="RememberMe" type="checkbox">
+                            <label asp-for="RememberMe"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button type="submit" class="btn waves-effect waves-light light-blue darken-1 col s12 m6 l4">Login</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

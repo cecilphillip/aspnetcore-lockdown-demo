@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day Care - Lockdown Demo</title>
+
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/css/materialize.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper  blue darken-1">
+                    <div class="container">
+                        <a asp-controller="Home" asp-action="Index" class="brand-logo">Day Care</a>
+                        @if (this.ViewContext.RouteData.Values["action"].ToString() == "Login")
+                        {
+                        }
+                        else if (this.User.Identity.IsAuthenticated)
+                        {
+                            <ul class="right hide-on-med-and-down">
+                                <li><a asp-controller="Security" asp-action="Logout"><i class="material-icons left">person</i>Logout</a></li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="l-container">
+        <section id="content">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </section>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="~/js/materialize.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,53 @@
+﻿html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+.login-container {
+    display: table;
+    margin: auto;
+    height: 80%;
+    width: 50%;
+}
+
+
+.login-container > div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.login-container .input-field {
+    margin-top: 0;
+}
+
+.login-container span.field-validation-error {
+    color: red;
+    font-size: 11px;
+    position: absolute;
+    right: 12px;
+    top: 48px;
+}
+
+.l-main, .l-side {
+    -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    background-color: white;
+}
+
+/*** Overrides ***/
+
+.navbar-fixed {
+    height: 45px;
+}
+
+nav {
+    height: 45px;
+    line-height: 45px;
+}
+
+    nav .brand-logo {
+        font-size: 1.8rem;
+    }
