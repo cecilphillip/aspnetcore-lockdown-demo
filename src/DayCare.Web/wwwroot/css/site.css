@@ -14,28 +14,40 @@ body {
 }
 
 
-.login-container > div {
-    display: table-cell;
-    vertical-align: middle;
-}
+    .login-container > div {
+        display: table-cell;
+        vertical-align: middle;
+    }
 
-.login-container .input-field {
-    margin-top: 0;
-}
+    .login-container .input-field {
+        margin-top: 0;
+    }
 
-.login-container span.field-validation-error {
-    color: red;
-    font-size: 11px;
-    position: absolute;
-    right: 12px;
-    top: 48px;
-}
+    .login-container span.field-validation-error {
+        color: red;
+        font-size: 11px;
+        position: absolute;
+        right: 12px;
+        top: 48px;
+    }
+
+    .login-container .card.red.validation-summary-errors {
+        padding: 1px 0;
+        margin: 0;
+        color: #ffffff;
+    }
+
+        .login-container .card.red.validation-summary-errors ul {
+            margin: 5px;
+        }
 
 .l-main, .l-side {
     -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     background-color: white;
 }
+
+
 
 /*** Overrides ***/
 

@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using DayCare.Web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DayCare.Web
 {
+    using Services;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Authorization;
@@ -27,8 +31,11 @@ namespace DayCare.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-
+            // Wiring up InMemory database only for testing
+            services.AddDbContext<DayCareContext>(options =>
+            {
+                options.UseInMemoryDatabase();
+            }, ServiceLifetime.Singleton);
 
             services.AddMvc(opts =>
             {
@@ -38,6 +45,8 @@ namespace DayCare.Web
 
                 opts.Filters.Add(new AuthorizeFilter(defaultPolicy));
             });
+
+            services.AddTransient<ISecurityService, SecurityService>();
 
         }
 
