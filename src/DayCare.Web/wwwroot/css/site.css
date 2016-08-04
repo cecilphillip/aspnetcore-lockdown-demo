@@ -41,13 +41,30 @@ body {
             margin: 5px;
         }
 
+.l-container {
+    height: 100%;
+}
+
 .l-main, .l-side {
     -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     box-shadow: 0 1px 5px rgba(0,0,0,0.2);
     background-color: white;
 }
 
+.logout.btn-flat {
+    color: #ffffff;
+}
 
+#error-page {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 600px;
+    height: 276px;
+}
 
 /*** Overrides ***/
 

@@ -23,7 +23,12 @@
                         else if (this.User.Identity.IsAuthenticated)
                         {
                             <ul class="right hide-on-med-and-down">
-                                <li><a asp-controller="Security" asp-action="Logout"><i class="material-icons left">person</i>Logout</a></li>
+                                <li>
+                                    <form asp-controller="Security" asp-action="Logout" method="post" class="form-horizontal" role="form">
+                                        <button class="logout btn-flat" type="submit">Logout</button>
+                                    </form>
+
+                                </li>
                             </ul>
                         }
                     </div>
@@ -32,11 +37,10 @@
         </div>
     </header>
     <div class="l-container">
-        <section id="content">
-            <div class="container">
-                @RenderBody()
-            </div>
-        </section>
+        <div class="container">
+            @RenderBody()
+        </div>
+
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="~/js/materialize.min.js"></script>

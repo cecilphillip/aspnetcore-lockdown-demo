@@ -1,5 +1,8 @@
-﻿using DayCare.Web.Models;
+﻿using System;
+using DayCare.Web.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace DayCare.Web
 {
@@ -16,18 +19,28 @@ namespace DayCare.Web
 
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public IConfigurationRoot Configuration { get; }
+        public ILoggerFactory LogFactory { get; set; }
+        public IHostingEnvironment HostingEnv { get; set; }
+
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            HostingEnv = env;
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            LogFactory = loggerFactory;
         }
 
-        public IConfigurationRoot Configuration { get; }
-
+        
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -50,21 +63,39 @@ namespace DayCare.Web
 
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            app.UseDeveloperExceptionPage();
 
-            if (env.IsDevelopment())
+            if (HostingEnv.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(errorApp =>
+                {
+                    errorApp.Run(async ctx =>
+                    {
+                        var errorFeature = ctx.Features.Get<IExceptionHandlerFeature>();
+                        var error = errorFeature.Error; // Do what you want with this error
+
+                        var errorLogger = LogFactory.CreateLogger<Startup>();
+                        errorLogger.LogError(911, error.Message, error);
+
+                        var responseData = new
+                        {
+                            Message = "Sorry, something when wrong. Please try again later",
+                            DateTime = DateTimeOffset.Now
+                        };
+
+                        await ctx.Response.WriteAsync(JsonConvert.SerializeObject(responseData));
+                    });
+                });
             }
 
             app.UseStaticFiles();
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = Constants.AppCookieMiddlewareScheme,
@@ -78,6 +109,8 @@ namespace DayCare.Web
                 AutomaticChallenge = true
             });
 
+           app.UseStatusCodePagesWithReExecute("/error/{0}");
+            
             //app.UseMvc(routes =>
             //{
             //    routes.MapRoute(

@@ -10,6 +10,7 @@
         {
             var config = new ConfigurationBuilder()
                 .AddCommandLine(args)
+                .AddEnvironmentVariables()
                 .Build();
 
             var host = new WebHostBuilder()
