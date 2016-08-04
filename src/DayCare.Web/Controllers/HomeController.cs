@@ -15,5 +15,10 @@ namespace DayCare.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult TimeLine()
+        {
+            return View();
+        }
     }
 }

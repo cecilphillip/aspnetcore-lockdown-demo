@@ -51,6 +51,41 @@ body {
     background-color: white;
 }
 
+.l-main {
+    padding: 10px 20px;
+}
+
+    .l-main .page-header {
+        padding-bottom: 9px;
+        border-bottom: 1px solid #eee;
+    }
+
+        .l-main .page-header h3 {
+            margin: 0;
+        }
+
+    .l-main .page-description {
+        margin-top: 20px;
+    }
+
+.child-grid {
+    margin-top: 20px;
+}
+
+    .child-grid .child-cell {
+        height: 120px;
+        text-align: center;
+    }
+
+        .child-grid .child-cell i {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .child-grid .child-cell span {
+            display: block;
+        }
+
 .logout.btn-flat {
     color: #ffffff;
 }
