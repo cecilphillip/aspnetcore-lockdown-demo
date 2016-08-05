@@ -59,7 +59,7 @@ namespace DayCare.Web
                 opts.Filters.Add(new AuthorizeFilter(defaultPolicy));
             });
 
-            services.AddTransient<ISecurityService, SecurityService>();
+            services.AddTransient<IDayCareService, DayCareService>();
 
         }
 

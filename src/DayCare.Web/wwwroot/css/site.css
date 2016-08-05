@@ -73,9 +73,13 @@ body {
 }
 
     .child-grid .child-cell {
-        height: 120px;
+        height: 100px;
         text-align: center;
     }
+
+        .child-grid .child-cell:hover {
+            background-color: #fff9c4;
+        }
 
         .child-grid .child-cell i {
             font-size: 3em;

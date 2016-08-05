@@ -13,11 +13,11 @@ namespace DayCare.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : Controller
     {
-        private readonly ISecurityService _securityService;
+        private readonly IDayCareService _dayCareService;
 
-        public SecurityController(ISecurityService securityService)
+        public SecurityController(IDayCareService dayCareService)
         {
-            _securityService = securityService;
+            _dayCareService = dayCareService;
         }
 
         [HttpGet]
@@ -31,7 +31,7 @@ namespace DayCare.Web.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
 
-            var guardian = await _securityService.ValidateGuardianCredentialsAsync(loginViewModel.Email, loginViewModel.Password);
+            var guardian = await _dayCareService.ValidateGuardianCredentialsAsync(loginViewModel.Email, loginViewModel.Password);
             if (guardian != null)
             {
                 var claims = new List<Claim>

@@ -9,6 +9,7 @@ namespace DayCare.Web.Models
     {
         public virtual DbSet<Guardian> Guardians { get; set; }
         public virtual DbSet<Child> Children { get; set; }
+        public virtual DbSet<ChildActivity> ChildrenActivities { get; set; }
         public virtual DbSet<ChildGuardianInfo> ChildGuardians { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
 
@@ -31,6 +32,11 @@ namespace DayCare.Web.Models
                 .HasOne(cg => cg.Child)
                 .WithMany(c => c.GuardianInfo)
                 .HasForeignKey(cg => cg.ChildId);
+
+            modelBuilder.Entity<ChildActivity>()
+                .HasOne(ca => ca.Child)
+                .WithMany(c => c.Activities)
+                .HasForeignKey(ca => ca.ChildId);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -75,7 +81,7 @@ namespace DayCare.Web.Models
                 dale,rachel
             };
 
-            // Child info
+            #region Child info
 
             var smithChildInfo = new List<ChildGuardianInfo>
             {
@@ -136,10 +142,36 @@ namespace DayCare.Web.Models
                    RelationshipType = RelationshipType.Other
                },
             };
+            #endregion
+
+            #region Activity
+
+            var activities = new List<ChildActivity>
+            {
+                // Jones Kids
+                new ChildActivity { Child = billy, Title = "Nap Time", Notes = "Slept for 2 hours.", Ocurred = DateTimeOffset.Now.AddDays(-2)},
+                new ChildActivity { Child = billy, Title = "Arrived", Notes = "Jane dropped him off.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = billy, Title = "Ate", Notes = "Didn't eat any of his food today.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+
+                new ChildActivity { Child = bonnie, Title = "Nap Time", Notes = "Slept for 3 hours.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = bonnie, Title = "Arrived", Notes = "John dropped her off", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = bonnie, Title = "Ate", Notes = "Didn't eat any of her food today.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                
+                // Smith Kids
+                new ChildActivity { Child = ellie, Title = "Nap Time", Notes = "Didn't sleep at all today", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = ellie, Title = "Arrived", Notes = "Donna dropped her off", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = ellie, Title = "Ate", Notes = "She was really hungry today. She asked for seconds", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+
+                new ChildActivity { Child = ellie, Title = "Nap Time", Notes = "Didn't sleep at all today", Ocurred = DateTimeOffset.Now.AddDays(-5)},
+                new ChildActivity { Child = ellie, Title = "Left", Notes = "His uncle picked him up today early.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = ellie, Title = "Ate", Notes = "She was really hungry today. She asked for seconds", Ocurred = DateTimeOffset.Now.AddDays(-4)},
+            };
+            #endregion
 
             Guardians.AddRange(guardians);
             Children.AddRange(children);
             ChildGuardians.AddRange(smithChildInfo);
+            ChildrenActivities.AddRange(activities);
             Staff.AddRange(staff);
 
             SaveChanges();
