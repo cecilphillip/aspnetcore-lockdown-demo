@@ -11,6 +11,7 @@ namespace DayCare.Web.Models
         public virtual DbSet<Child> Children { get; set; }
         public virtual DbSet<ChildActivity> ChildrenActivities { get; set; }
         public virtual DbSet<ChildGuardianInfo> ChildGuardians { get; set; }
+        public virtual DbSet<ChildStaffAssignment> ChildStaffAssignments { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
 
         public DayCareContext(DbContextOptions<DayCareContext> options) : base(options)
@@ -37,6 +38,19 @@ namespace DayCare.Web.Models
                 .HasOne(ca => ca.Child)
                 .WithMany(c => c.Activities)
                 .HasForeignKey(ca => ca.ChildId);
+
+            modelBuilder.Entity<ChildStaffAssignment>()
+                .HasKey(cs => new { cs.ChildId, cs.StaffId });
+
+            modelBuilder.Entity<ChildStaffAssignment>()
+                .HasOne(cs => cs.Child)
+                .WithMany(c => c.StaffAssignments)
+                .HasForeignKey(cs => cs.ChildId);
+
+            modelBuilder.Entity<ChildStaffAssignment>()
+                .HasOne(cs => cs.StaffMember)
+                .WithMany(s => s.ChildAssignments)
+                .HasForeignKey(cs => cs.StaffId);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -73,7 +87,7 @@ namespace DayCare.Web.Models
             };
 
             // Staff
-            var dale = new Staff { FirstName = "Dale", LastName = "King", Email = "david@daycare.edu" };
+            var dale = new Staff { FirstName = "Dale", LastName = "King", Email = "dale@daycare.edu" };
             var rachel = new Staff { FirstName = "Rachel", LastName = "Turner", Email = "rachel@daycare.edu" };
 
             var staff = new List<Staff>
@@ -161,10 +175,25 @@ namespace DayCare.Web.Models
                 new ChildActivity { Child = ellie, Title = "Nap Time", Notes = "Didn't sleep at all today", Ocurred = DateTimeOffset.Now.AddDays(-3)},
                 new ChildActivity { Child = ellie, Title = "Arrived", Notes = "Donna dropped her off", Ocurred = DateTimeOffset.Now.AddDays(-3)},
                 new ChildActivity { Child = ellie, Title = "Ate", Notes = "She was really hungry today. She asked for seconds", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = ellie, Title = "Dance Time", Notes = "Missed out on today's session. She wasn't too well. We called her parents.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
 
-                new ChildActivity { Child = ellie, Title = "Nap Time", Notes = "Didn't sleep at all today", Ocurred = DateTimeOffset.Now.AddDays(-5)},
-                new ChildActivity { Child = ellie, Title = "Left", Notes = "His uncle picked him up today early.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
-                new ChildActivity { Child = ellie, Title = "Ate", Notes = "She was really hungry today. She asked for seconds", Ocurred = DateTimeOffset.Now.AddDays(-4)},
+                new ChildActivity { Child = evan, Title = "Nap Time", Notes = "Didn't sleep at all today", Ocurred = DateTimeOffset.Now.AddDays(-5)},
+                new ChildActivity { Child = evan, Title = "Left", Notes = "His uncle picked him up today early.", Ocurred = DateTimeOffset.Now.AddDays(-3)},
+                new ChildActivity { Child = evan, Title = "Ate", Notes = "He was really hungry today, but we didn't give him too much more", Ocurred = DateTimeOffset.Now.AddDays(-4)},
+                new ChildActivity { Child = evan, Title = "Play Time", Notes = "He did really well at soccer. Wasn't too fond baseball", Ocurred = DateTimeOffset.Now.AddDays(-4)},
+                new ChildActivity { Child = evan, Title = "Craft Time", Notes = "His painting skills are improving", Ocurred = DateTimeOffset.Now.AddDays(-4)},
+            };
+            #endregion
+
+            #region Assignments
+            var assignments = new List<ChildStaffAssignment>()
+            {
+                new ChildStaffAssignment { Child = billy, StaffMember = dale},
+                new ChildStaffAssignment { Child = billy, StaffMember = rachel},
+                new ChildStaffAssignment { Child = bonnie, StaffMember = rachel},
+                new ChildStaffAssignment { Child = ellie, StaffMember = dale},
+                new ChildStaffAssignment { Child = ellie, StaffMember = rachel},
+                new ChildStaffAssignment { Child = evan, StaffMember = rachel}
             };
             #endregion
 
@@ -172,6 +201,8 @@ namespace DayCare.Web.Models
             Children.AddRange(children);
             ChildGuardians.AddRange(smithChildInfo);
             ChildrenActivities.AddRange(activities);
+
+            ChildStaffAssignments.AddRange(assignments);
             Staff.AddRange(staff);
 
             SaveChanges();

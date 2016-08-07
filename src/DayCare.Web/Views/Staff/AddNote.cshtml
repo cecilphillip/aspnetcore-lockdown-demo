@@ -1,0 +1,52 @@
+﻿@model NoteModelViewModel
+
+<div class="section row">
+    <div class="col s12 m9 left">
+        <div class="l-main">
+            <div class="page-header">
+                <h5>Add a note for @Model.ChildName</h5>
+            </div>
+
+
+            <form class="note-form" asp-route-controller="Staff" asp-route-action="AddNote" method="post">
+                <div class="row">
+                    <div class="input-field col s12 center">
+                        <div asp-validation-summary="All" class="card red">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" />
+                        <span asp-validation-for="Title" class="right"></span>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label asp-for="Notes"></label>
+                        <input asp-for="Notes" />
+                        <span asp-validation-for="Title" class="right"></span>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <button type="submit" class="btn waves-effect waves-light light-blue darken-1 ">Submit</button>
+                    </div>
+                </div>
+
+                <input type="hidden" asp-for="ChildId" />
+            </form>
+
+
+
+
+        </div>
+
+    </div>
+</div>

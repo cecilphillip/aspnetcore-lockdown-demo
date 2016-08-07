@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace DayCare.Web
 {
+    using System.Security.Claims;
     using Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -40,13 +41,19 @@ namespace DayCare.Web
             LogFactory = loggerFactory;
         }
 
-        
+
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddDataProtection();
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Constants.GuardianPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Guardian"));
+                //options.AddPolicy("Guardian", policyBuilder => policyBuilder.RequireRole("Guardian"));
+
+                options.AddPolicy(Constants.StaffPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Staff"));
+                //options.AddPolicy("Staff", policyBuilder => policyBuilder.RequireRole("Staff"));
+            });
 
             // Wiring up InMemory database only for testing
             services.AddDbContext<DayCareContext>(options =>
@@ -113,8 +120,8 @@ namespace DayCare.Web
                 AutomaticChallenge = true
             });
 
-           app.UseStatusCodePagesWithReExecute("/error/{0}");
-            
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
             //app.UseMvc(routes =>
             //{
             //    routes.MapRoute(

@@ -1,0 +1,62 @@
+﻿@using System.Security.Claims
+@model  Child
+
+<div class="section row">
+    <div class="col s12 m9 left">
+        <div class="l-main">
+            <div class="page-header">
+                <h5>@(Model.FirstName)'s Time Line</h5>
+            </div>
+
+            <timeline activities="Model.Activities" />
+
+        </div>
+    </div>
+    <div class="col s12 m3 right">
+        <aside class="l-side">
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">school</i>Assigned Staff
+                    </div>
+                    <div class="collapsible-body" style="">
+                        <ul>
+                            @foreach (var assignment in Model.StaffAssignments)
+                            {
+                            <li>
+                                <a href="#"><i class="material-icons">label</i>@($"{assignment.StaffMember.FirstName} {assignment.StaffMember.LastName}")</a>
+                            </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">people</i>Guardians
+                    </div>
+                    <div class="collapsible-body" style="">
+                        <ul>
+                            @foreach (var guardianInfo in Model.GuardianInfo)
+                            {
+                            <li>
+                                <a href="#"><i class="material-icons">label</i>@($"{guardianInfo.Guardian.FirstName} {guardianInfo.Guardian.LastName}")</a>
+                            </li>
+                            }
+
+                        </ul>
+                    </div>
+                </li>
+
+
+
+            </ul>
+
+        </aside>
+        @if (User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Staff"))
+        {<aside class="l-side">
+            <a asp-action="AddNote" asp-controller="Staff" asp-route-childId="@Model.Id" class="btn waves-effect waves-light light-blue darken-1">Add Note</a>
+        </aside>
+        }
+
+    </div>
+</div>

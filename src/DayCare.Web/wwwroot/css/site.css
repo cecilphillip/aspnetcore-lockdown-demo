@@ -40,9 +40,11 @@ body {
         .login-container .card.red.validation-summary-errors ul {
             margin: 5px;
         }
+
 button[toggle] {
     color: #000000;
 }
+
 .l-container {
     height: 100%;
 }
@@ -70,19 +72,27 @@ button[toggle] {
         margin-top: 20px;
     }
 
-.l-side ul.collapsible {
-    margin: 0;
-    box-shadow: none;
+.l-side {
+    margin-bottom: 15px;
 }
 
-.l-side .collapsible-body ul li {
-    line-height: 30px;
-}
-
-    .l-side .collapsible-body ul li a {
-        font-size: 14px;
-        margin: 10px 15px 8px 10px;
+    .l-side a.btn {
+        width: 100%;
     }
+
+    .l-side ul.collapsible {
+        margin: 0;
+        box-shadow: none;
+    }
+
+    .l-side .collapsible-body ul li {
+        line-height: 30px;
+    }
+
+        .l-side .collapsible-body ul li a {
+            font-size: 14px;
+            margin: 10px 15px 8px 10px;
+        }
 
 .child-grid {
     margin-top: 20px;
@@ -122,6 +132,11 @@ button[toggle] {
 }
 
 /*** Overrides ***/
+@media only screen and (min-width: 993px) {
+    .container {
+        width: 75%;
+    }
+}
 
 .navbar-fixed {
     height: 45px;
@@ -135,3 +150,10 @@ nav {
     nav .brand-logo {
         font-size: 1.8rem;
     }
+
+.l-side .collapsible-body li a i.material-icons {
+    font-size: 15px;
+    line-height: 13px;
+    vertical-align: sub;
+    margin-right: 5px;
+}

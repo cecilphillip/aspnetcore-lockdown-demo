@@ -3,112 +3,61 @@
 
     <div>
         <div id="login-page" class="row">
-            <div class="front">
-                <div class="col s12 z-depth-4 card-panel">
-                    <form class="login-form" asp-route-controller="Security" asp-route-action="LoginGuardian" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                        <div class="row">
-                            <div class="input-field col s12 center">
-                                <p class="center login-form-text">Guardian Login</p>
-                                <div asp-validation-summary="All" class="card red">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row margin">
-                            <div class="input-field col s12 ">
-                                <div class="prefix">
-                                    <i class="material-icons dp48">perm_identity</i>
-                                </div>
-                                <label asp-for="Email"></label>
-                                <input asp-for="Email" />
-                                <span asp-validation-for="Email" class="right"></span>
-                            </div>
-                        </div>
-                        <div class="row margin">
-                            <div class="input-field col s12">
-                                <div class="prefix">
-                                    <i class="material-icons dp48">lock_outline</i>
-                                </div>
-                                <label asp-for="Password"></label>
-                                <input asp-for="Password" type="password" />
-                                <span asp-validation-for="Password" class="right"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 m12 l12  login-text">
-                                <input asp-for="RememberMe" type="checkbox">
-                                <label asp-for="RememberMe"></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <button type="submit" class="btn waves-effect waves-light light-blue darken-1 ">Login</button>
-                                <button toggle="on" type="button" class="right btn-flat waves-effect waves-light grey lighten-4 ">Staff Login</button>
 
+            <div class="col s12 z-depth-4 card-panel">
+                <form class="login-form" asp-route-controller="Security" asp-route-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div class="row">
+                        <div class="input-field col s12 center">
+                            <p class="center login-form-text">Enter Your Credentials</p>
+                            <div asp-validation-summary="All" class="card red">
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12 ">
+                            <div class="prefix">
+                                <i class="material-icons dp48">account_box</i>
+                            </div>
 
-            <div class="back">
-                <div class="col s12 z-depth-4 card-panel">
-                    <form class="login-form" asp-route-controller="Security" asp-route-action="LoginStaff" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                        <div class="row">
-                            <div class="input-field col s12 center">
-                                <p class="center login-form-text">Staff Login</p>
-                                <div asp-validation-summary="All" class="card red">
-                                </div>
-                            </div>
+                            <select asp-for="LoginType" asp-items="Html.GetEnumSelectList<LoginType>()"></select>
+                            <label asp-for="LoginType"></label>
+                            <span asp-validation-for="LoginType" class="right"></span>
                         </div>
-                        <div class="row margin">
-                            <div class="input-field col s12 ">
-                                <div class="prefix">
-                                    <i class="material-icons dp48">perm_identity</i>
-                                </div>
-                                <label asp-for="Email"></label>
-                                <input asp-for="Email" />
-                                <span asp-validation-for="Email" class="right"></span>
+                    </div>
+                    <div class="row margin">
+                        <div class="input-field col s12 ">
+                            <div class="prefix">
+                                <i class="material-icons dp48">email</i>
                             </div>
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" />
+                            <span asp-validation-for="Email" class="right"></span>
                         </div>
-                        <div class="row margin">
-                            <div class="input-field col s12">
-                                <div class="prefix">
-                                    <i class="material-icons dp48">lock_outline</i>
-                                </div>
-                                <label asp-for="Password"></label>
-                                <input asp-for="Password" type="password" />
-                                <span asp-validation-for="Password" class="right"></span>
+                    </div>
+
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <div class="prefix">
+                                <i class="material-icons dp48">lock_outline</i>
                             </div>
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" type="password" />
+                            <span asp-validation-for="Password" class="right"></span>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12 m12 l12  login-text">
-                                <input asp-for="RememberMe" type="checkbox">
-                                <label asp-for="RememberMe"></label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m12 l12  login-text">
+                            <input asp-for="RememberMe" type="checkbox">
+                            <label asp-for="RememberMe"></label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <button type="submit" class="btn waves-effect waves-light light-blue darken-1 ">Login</button>
-                                <button toggle="on" type="button" class="right btn-flat waves-effect waves-light grey lighten-4">Guardian Login</button>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button type="submit" class="btn waves-effect waves-light light-blue darken-1 ">Login</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
-@section scripts {
-    <script type="text/javascript">
-        $(function () {
-            $("#login-page").flip({ trigger: 'manual' });
-            $(".front").css('z-index', 3);
-
-            $("button[toggle]").click(function (evt) {
-                evt.preventDefault();
-                $("#login-page").flip('toggle');
-            });
-        });
-    </script>
-}

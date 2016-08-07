@@ -12,6 +12,12 @@ namespace DayCare.Web.Services
         Task<Guardian> ValidateGuardianCredentialsAsync(string email, string password);
         Task<Guardian> GetGuardianAsync(int id);
         Task<IEnumerable<ChildActivity>> GetActivitiesForChildAsync(int id);
+        Task<Staff> ValidateStaffCredentialsAsync(string email, string password);
+        Task<Staff> GetStaffMemberAsync(int id);
+        Task<IEnumerable<Child>> GetChildrenAsync();
+        Task<Child> GetChildAsync(int id);
+        Task AddNoteForChildAsync(ChildActivity childActivity);
+        Task<bool> ChildExistsAsync(int childId);
     }
 
     public class DayCareService : IDayCareService
@@ -32,6 +38,44 @@ namespace DayCare.Web.Services
             }
 
             return null;
+        }
+
+        public async Task<Staff> ValidateStaffCredentialsAsync(string email, string password)
+        {
+            var staff = await _dbContext.Staff.SingleOrDefaultAsync(g => g.Email == email);
+            if (staff != null)
+            {
+                return !string.IsNullOrEmpty(password) ? staff : null;
+            }
+
+            return null;
+        }
+
+        public async Task<Staff> GetStaffMemberAsync(int id)
+        {
+            var staffMember = await _dbContext.Staff.SingleOrDefaultAsync(s => s.Id == id);
+            return staffMember;
+        }
+
+        public async Task<IEnumerable<Child>> GetChildrenAsync()
+        {
+            return await _dbContext.Children.ToListAsync();
+        }
+
+        public async Task<Child> GetChildAsync(int id)
+        {
+            return await _dbContext.Children.SingleOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task AddNoteForChildAsync(ChildActivity childActivity)
+        {
+            _dbContext.ChildrenActivities.Add(childActivity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<bool> ChildExistsAsync(int childId)
+        {
+            return _dbContext.Children.AnyAsync(c => c.Id == childId);
         }
 
         public async Task<Guardian> GetGuardianAsync(int id)

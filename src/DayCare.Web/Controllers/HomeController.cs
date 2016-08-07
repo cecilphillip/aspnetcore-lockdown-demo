@@ -9,8 +9,10 @@ using DayCare.Web.Services;
 
 namespace DayCare.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(Policy = Constants.GuardianPolicyName)]
     public class HomeController : Controller
     {
         private readonly IDayCareService _dayCareService;
@@ -36,8 +38,8 @@ namespace DayCare.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> TimeLine(int id)
         {
-            IEnumerable<ChildActivity> activities = await _dayCareService.GetActivitiesForChildAsync(id);
-            return View(activities);
+           var child = await _dayCareService.GetChildAsync(id);
+            return View(child);
         }
     }
 }
