@@ -58,7 +58,7 @@ namespace DayCare.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginTeacher(LoginViewModel loginViewModel, string returnUrl = null)
+        public async Task<IActionResult> LoginStaff(LoginViewModel loginViewModel, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 

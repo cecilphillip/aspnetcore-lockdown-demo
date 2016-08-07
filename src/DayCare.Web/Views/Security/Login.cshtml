@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <button type="submit" class="btn waves-effect waves-light light-blue darken-1 ">Login</button>
-                                <button toggle="on" type="button" class="right btn-flat waves-effect waves-light grey lighten-4 ">Teacher Login</button>
+                                <button toggle="on" type="button" class="right btn-flat waves-effect waves-light grey lighten-4 ">Staff Login</button>
 
                             </div>
                         </div>
@@ -52,10 +52,10 @@
 
             <div class="back">
                 <div class="col s12 z-depth-4 card-panel">
-                    <form class="login-form" asp-route-controller="Security" asp-route-action="LoginTeacher" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <form class="login-form" asp-route-controller="Security" asp-route-action="LoginStaff" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <div class="row">
                             <div class="input-field col s12 center">
-                                <p class="center login-form-text">Teacher Login</p>
+                                <p class="center login-form-text">Staff Login</p>
                                 <div asp-validation-summary="All" class="card red">
                                 </div>
                             </div>
