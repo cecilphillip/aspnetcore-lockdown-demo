@@ -42,7 +42,7 @@ namespace DayCare.Web.Services
 
         public async Task<IEnumerable<ChildActivity>> GetActivitiesForChildAsync(int id)
         {
-            var activities = await _dbContext.ChildrenActivities.Where(ca => ca.Id == id).ToListAsync();
+            var activities = await _dbContext.ChildrenActivities.Where(ca => ca.ChildId == id).ToListAsync();
             return activities;
         }
     }

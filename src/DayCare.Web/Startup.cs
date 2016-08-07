@@ -44,6 +44,10 @@ namespace DayCare.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddDataProtection();
+            services.AddAuthorization();
+
             // Wiring up InMemory database only for testing
             services.AddDbContext<DayCareContext>(options =>
             {
