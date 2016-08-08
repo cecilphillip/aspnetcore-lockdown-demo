@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using DayCare.Web.Services;
-
-namespace DayCare.Web.Controllers
+﻿namespace DayCare.Web.Controllers
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using Services;
     using Microsoft.AspNetCore.Http.Authentication;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -48,15 +47,15 @@ namespace DayCare.Web.Controllers
 
         private async Task<IActionResult> SignInStaff(LoginViewModel loginViewModel, string returnUrl)
         {
-            var guardian = await _dayCareService.ValidateStaffCredentialsAsync(loginViewModel.Email, loginViewModel.Password);
-            if (guardian != null)
+            var staff = await _dayCareService.ValidateStaffCredentialsAsync(loginViewModel.Email, loginViewModel.Password);
+            if (staff != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, guardian.Id.ToString(),ClaimValueTypes.Integer, "Local"),
-                    new Claim(ClaimTypes.Name,$"{guardian.FirstName} {guardian.LastName}"),
+                    new Claim(ClaimTypes.NameIdentifier, staff.Id.ToString(),ClaimValueTypes.Integer, "Local"),
+                    new Claim(ClaimTypes.Name,$"{staff.FirstName} {staff.LastName}"),
 
-                    guardian.FirstName == "admin"?  new Claim(ClaimTypes.Role, "Admin"): new Claim(ClaimTypes.Role, "Staff"),
+                    staff.FirstName == "admin"?  new Claim(ClaimTypes.Role, "Admin"): new Claim(ClaimTypes.Role, "Staff"),
 
                     new Claim(ClaimTypes.Email, loginViewModel.Email)
                 };
@@ -68,7 +67,7 @@ namespace DayCare.Web.Controllers
                     IsPersistent = loginViewModel.RememberMe,
                 };
 
-                await this.HttpContext.Authentication.SignInAsync(Constants.AppCookieMiddlewareScheme, new ClaimsPrincipal(identity), props);
+                await HttpContext.Authentication.SignInAsync(Constants.AppCookieMiddlewareScheme, new ClaimsPrincipal(identity), props);
                 if (string.IsNullOrEmpty(returnUrl))
                 {
                     return RedirectToAction("Index", "Staff");
@@ -120,6 +119,7 @@ namespace DayCare.Web.Controllers
             return Redirect("/");
         }
 
+        [HttpGet]
         public IActionResult Denied()
         {
             return View();

@@ -1,11 +1,13 @@
-﻿using System;
-using DayCare.Web.Models;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+﻿
+using System.Threading.Tasks;
 
 namespace DayCare.Web
 {
+    using System;
+    using Models;
+    using Microsoft.AspNetCore.Diagnostics;
+    using Microsoft.EntityFrameworkCore;
+    using Newtonsoft.Json;
     using System.Security.Claims;
     using Services;
     using Microsoft.AspNetCore.Builder;
@@ -13,7 +15,6 @@ namespace DayCare.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Authorization;
@@ -47,6 +48,7 @@ namespace DayCare.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataProtection();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(Constants.GuardianPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Guardian"));
@@ -55,7 +57,7 @@ namespace DayCare.Web
                 options.AddPolicy(Constants.StaffPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Staff", "Admin"));
                 //options.AddPolicy("Staff", policyBuilder => policyBuilder.RequireRole("Staff"));
             });
-          
+
             services.AddTransient<IAuthorizationHandler, AssignedStaffAddNoteHandler>();
             services.AddTransient<IAuthorizationHandler, StaffAdminAddNoteHandler>();
 
@@ -66,7 +68,7 @@ namespace DayCare.Web
             }, ServiceLifetime.Singleton);
 
             services.AddAntiforgery();
-            
+
             services.AddMvc(opts =>
             {
                 var defaultPolicy = new AuthorizationPolicyBuilder()
@@ -123,6 +125,20 @@ namespace DayCare.Web
 
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true
+            });
+
+            app.UseClaimsTransformation(ctx =>
+            {
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, "Attendee")
+                };
+
+                var id = new ClaimsIdentity(claims, "COTB");
+                ctx.Principal.AddIdentity(id);
+
+                return Task.FromResult(ctx.Principal);
             });
 
             app.UseStatusCodePagesWithReExecute("/error/{0}");

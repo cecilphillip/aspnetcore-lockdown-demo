@@ -23,9 +23,15 @@ namespace DayCare.Web.Controllers
             _authorizationService = authorizationService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var idClaim = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var id = User.Identities.SingleOrDefault(i => i.AuthenticationType == "Local");
+            var idClaim = id?.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (idClaim == null)
+            {
+                return Challenge(Constants.AppCookieMiddlewareScheme);
+            }
             var staffMember = await _dayCareService.GetStaffMemberAsync(int.Parse(idClaim.Value));
             IEnumerable<Child> allTheChildren = await _dayCareService.GetChildrenAsync();
             return View(new StaffIndexViewModel
@@ -49,7 +55,7 @@ namespace DayCare.Web.Controllers
 
             if (!await _authorizationService.AuthorizeAsync(User, child, new CanAddNoteRequirement()))
             {
-                return new ChallengeResult();
+                return Challenge();
             }
            
             return View(new NoteModelViewModel
@@ -64,7 +70,8 @@ namespace DayCare.Web.Controllers
         {
             if (!await _dayCareService.ChildExistsAsync(model.ChildId))
             {
-                //TODO Handle child not found
+                ModelState.AddModelError("", "This note cannot be added. Please contact support.");
+                return View(model);
             }
             await _dayCareService.AddNoteForChildAsync(new ChildActivity
             {
