@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -17,7 +18,14 @@
             <nav>
                 <div class="nav-wrapper  blue darken-1">
                     <div class="container">
-                        <a asp-controller="Home" asp-action="Index" class="brand-logo">Day Care</a>
+                        @if (User.Identity.IsAuthenticated && User.HasClaim(c => c.Type == ClaimTypes.Role && (c.Value == "Admin" || c.Value == "Staff")))
+                        {
+                            <a asp-controller="Staff" asp-action="Index" class="brand-logo">Day Care</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Home" asp-action="Index" class="brand-logo">Day Care</a>
+                        }
                         @if (this.ViewContext.RouteData.Values["action"].ToString() == "Login")
                         {
                         }

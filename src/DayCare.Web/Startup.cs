@@ -17,6 +17,7 @@ namespace DayCare.Web
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Authorization;
+    using Requirements;
 
     public class Startup
     {
@@ -51,9 +52,12 @@ namespace DayCare.Web
                 options.AddPolicy(Constants.GuardianPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Guardian"));
                 //options.AddPolicy("Guardian", policyBuilder => policyBuilder.RequireRole("Guardian"));
 
-                options.AddPolicy(Constants.StaffPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Staff"));
+                options.AddPolicy(Constants.StaffPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Staff", "Admin"));
                 //options.AddPolicy("Staff", policyBuilder => policyBuilder.RequireRole("Staff"));
             });
+          
+            services.AddTransient<IAuthorizationHandler, AssignedStaffAddNoteHandler>();
+            services.AddTransient<IAuthorizationHandler, StaffAdminAddNoteHandler>();
 
             // Wiring up InMemory database only for testing
             services.AddDbContext<DayCareContext>(options =>
@@ -61,6 +65,8 @@ namespace DayCare.Web
                 options.UseInMemoryDatabase();
             }, ServiceLifetime.Singleton);
 
+            services.AddAntiforgery();
+            
             services.AddMvc(opts =>
             {
                 var defaultPolicy = new AuthorizationPolicyBuilder()
@@ -71,7 +77,6 @@ namespace DayCare.Web
             });
 
             services.AddTransient<IDayCareService, DayCareService>();
-
         }
 
         public void Configure(IApplicationBuilder app)

@@ -1,14 +1,9 @@
-﻿
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using DayCare.Web.Models;
-using DayCare.Web.Services;
-
-namespace DayCare.Web.Controllers
+﻿namespace DayCare.Web.Controllers
 {
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Services;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 

@@ -52,7 +52,7 @@
             </ul>
 
         </aside>
-        @if (User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Staff"))
+        @if (User.Claims.Any(c => c.Type == ClaimTypes.Role && (c.Value == "Staff" || c.Value == "Admin")))
         {<aside class="l-side">
             <a asp-action="AddNote" asp-controller="Staff" asp-route-childId="@Model.Id" class="btn waves-effect waves-light light-blue darken-1">Add Note</a>
         </aside>

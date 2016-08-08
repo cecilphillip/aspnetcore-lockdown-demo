@@ -36,7 +36,7 @@ namespace DayCare.Web.Controllers
             switch (loginViewModel.LoginType)
             {
                 case LoginType.Guardian:
-                    return await SignInGuardian(loginViewModel, returnUrl);                    
+                    return await SignInGuardian(loginViewModel, returnUrl);
                 case LoginType.Staff:
                     return await SignInStaff(loginViewModel, returnUrl);
                 default:
@@ -53,9 +53,11 @@ namespace DayCare.Web.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, guardian.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, guardian.Id.ToString(),ClaimValueTypes.Integer, "Local"),
                     new Claim(ClaimTypes.Name,$"{guardian.FirstName} {guardian.LastName}"),
-                    new Claim(ClaimTypes.Role, "Staff"),
+
+                    guardian.FirstName == "admin"?  new Claim(ClaimTypes.Role, "Admin"): new Claim(ClaimTypes.Role, "Staff"),
+
                     new Claim(ClaimTypes.Email, loginViewModel.Email)
                 };
 

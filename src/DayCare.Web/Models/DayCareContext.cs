@@ -89,10 +89,11 @@ namespace DayCare.Web.Models
             // Staff
             var dale = new Staff { FirstName = "Dale", LastName = "King", Email = "dale@daycare.edu" };
             var rachel = new Staff { FirstName = "Rachel", LastName = "Turner", Email = "rachel@daycare.edu" };
+            var admin = new Staff { FirstName = "admin", LastName = "", Email = "admin@daycare.edu" };
 
             var staff = new List<Staff>
             {
-                dale,rachel
+                dale,rachel, admin
             };
 
             #region Child info
@@ -193,7 +194,7 @@ namespace DayCare.Web.Models
                 new ChildStaffAssignment { Child = bonnie, StaffMember = rachel},
                 new ChildStaffAssignment { Child = ellie, StaffMember = dale},
                 new ChildStaffAssignment { Child = ellie, StaffMember = rachel},
-                new ChildStaffAssignment { Child = evan, StaffMember = rachel}
+                new ChildStaffAssignment { Child = evan, StaffMember = dale}
             };
             #endregion
 

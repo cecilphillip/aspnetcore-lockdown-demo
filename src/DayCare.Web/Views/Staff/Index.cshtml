@@ -5,7 +5,7 @@
         <div class="l-main">
 
             <div class="page-header">
-                <h5>Your Assigned Child</h5>
+                <h5>Your Assigned Children</h5>
             </div>
             <div class="page-description">
                 Here are all of the children that you have access to in our system. Choose one of the children
@@ -13,16 +13,18 @@
             </div>
             <div class="child-grid">
                 <div class="row">
-                    @foreach (var assignment in Model.StaffMember.ChildAssignments)
+                    @if (Model.StaffMember.ChildAssignments != null)
                     {
+                        @foreach (var assignment in Model.StaffMember.ChildAssignments)
+                        {
 
-                        <div class="child-cell col s6 m3">
-                            <a asp-controller="Staff" asp-action="TimeLine" asp-route-id="@assignment.ChildId">
-                                <i class="material-icons dp48">perm_identity</i>
-                                <span>@($"{assignment.Child.FirstName} {assignment.Child.LastName}")</span>
-                            </a>
-                        </div>
-
+                            <div class="child-cell col s6 m3">
+                                <a asp-controller="Staff" asp-action="TimeLine" asp-route-id="@assignment.ChildId">
+                                    <i class="material-icons dp48">perm_identity</i>
+                                    <span>@($"{assignment.Child.FirstName} {assignment.Child.LastName}")</span>
+                                </a>
+                            </div>
+                        }
                     }
                 </div>
             </div>
@@ -45,15 +47,16 @@
             </div>
             <div class="child-grid">
                 <div class="row">
+
                     @foreach (var child in Model.Children)
                     {
 
-                    <div class="child-cell col s6 m3">
-                        <a asp-controller="Staff" asp-action="TimeLine" asp-route-id="@child.Id">
-                            <i class="material-icons dp48">perm_identity</i>
-                            <span>@($"{child.FirstName} {child.LastName}")</span>
-                        </a>
-                    </div>
+                        <div class="child-cell col s6 m3">
+                            <a asp-controller="Staff" asp-action="TimeLine" asp-route-id="@child.Id">
+                                <i class="material-icons dp48">perm_identity</i>
+                                <span>@($"{child.FirstName} {child.LastName}")</span>
+                            </a>
+                        </div>
 
                     }
                 </div>
