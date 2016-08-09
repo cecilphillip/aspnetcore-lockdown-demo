@@ -1,8 +1,9 @@
 ﻿
-using System.Threading.Tasks;
+
 
 namespace DayCare.Web
 {
+    using System.Threading.Tasks;
     using System;
     using Models;
     using Microsoft.AspNetCore.Diagnostics;
@@ -42,8 +43,6 @@ namespace DayCare.Web
 
             LogFactory = loggerFactory;
         }
-
-
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -127,6 +126,25 @@ namespace DayCare.Web
                 AutomaticChallenge = true
             });
 
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = Constants.TempCookieMiddlewareScheme,
+                CookieSecure = CookieSecurePolicy.SameAsRequest,
+
+                CookieHttpOnly = true,
+
+                AccessDeniedPath = new PathString(Constants.DeniedPath),
+                AutomaticAuthenticate = false,
+                AutomaticChallenge = false
+            });
+                
+            app.UseGitHubAuthentication(opts =>
+            {                
+                opts.SignInScheme = Constants.TempCookieMiddlewareScheme;               
+                opts.ClientId = "273d11a9b275ab715981";
+                opts.ClientSecret = "5cfe1f7beaf998cc0cf0f0dc81dfc3289b31b794";
+            });
+
             app.UseClaimsTransformation(ctx =>
             {
                 var claims = new[]
@@ -141,7 +159,7 @@ namespace DayCare.Web
                 return Task.FromResult(ctx.Principal);
             });
 
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
+            //app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             //app.UseMvc(routes =>
             //{

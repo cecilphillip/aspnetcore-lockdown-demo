@@ -51,9 +51,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <button type="submit" class="btn waves-effect waves-light light-blue darken-1 ">Login</button>
+                            <button type="submit" class="btn waves-effect waves-light light-blue darken-1">Login</button>
                         </div>
                     </div>
+                </form>
+                <form asp-controller="Security" asp-action="GitHubSignin" method="post" class="form-horizontal" role="form">
+                    <button type="submit" class="btn-flat waves-effect waves-light light-blue darken-1 right">GitHub</button>
                 </form>
             </div>
         </div>

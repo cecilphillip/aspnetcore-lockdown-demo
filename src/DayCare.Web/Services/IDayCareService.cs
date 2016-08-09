@@ -14,6 +14,7 @@ namespace DayCare.Web.Services
         Task<IEnumerable<ChildActivity>> GetActivitiesForChildAsync(int id);
         Task<Staff> ValidateStaffCredentialsAsync(string email, string password);
         Task<Staff> GetStaffMemberAsync(int id);
+        Task<Staff> GetStaffMemberAsync(string name);
         Task<IEnumerable<Child>> GetChildrenAsync();
         Task<Child> GetChildAsync(int id);
         Task AddNoteForChildAsync(ChildActivity childActivity);
@@ -54,6 +55,12 @@ namespace DayCare.Web.Services
         public async Task<Staff> GetStaffMemberAsync(int id)
         {
             var staffMember = await _dbContext.Staff.SingleOrDefaultAsync(s => s.Id == id);
+            return staffMember;
+        }
+
+        public async Task<Staff> GetStaffMemberAsync(string name)
+        {
+            var staffMember = await _dbContext.Staff.SingleOrDefaultAsync(s => s.FirstName == name);
             return staffMember;
         }
 
