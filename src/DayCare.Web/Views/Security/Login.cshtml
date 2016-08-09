@@ -29,7 +29,7 @@
                                 <i class="material-icons dp48">email</i>
                             </div>
                             <label asp-for="Email"></label>
-                            <input asp-for="Email" />
+                            <input asp-for="Email"/>
                             <span asp-validation-for="Email" class="right"></span>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                 <i class="material-icons dp48">lock_outline</i>
                             </div>
                             <label asp-for="Password"></label>
-                            <input asp-for="Password" type="password" />
+                            <input asp-for="Password" type="password"/>
                             <span asp-validation-for="Password" class="right"></span>
                         </div>
                     </div>
@@ -55,8 +55,10 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="col s12 z-depth-4 card-panel" style="padding: 0 8px 8px;">
                 <form asp-controller="Security" asp-action="GitHubSignin" method="post" class="form-horizontal" role="form">
-                    <button type="submit" class="btn-flat waves-effect waves-light light-blue darken-1 right">GitHub</button>
+                    <p class="center">Or choose one of these: </p> <button type="submit" class="btn waves-effect waves-light light-blue darken-1">GitHub</button>
                 </form>
             </div>
         </div>

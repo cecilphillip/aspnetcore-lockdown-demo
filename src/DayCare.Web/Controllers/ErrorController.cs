@@ -6,9 +6,6 @@
     public class ErrorController : Controller
     {
         [HttpGet("{statusCode}")]
-        public IActionResult Index(int statusCode)
-        {
-            return View("Error", statusCode);
-        }
+        public IActionResult Index(int statusCode) => View("Error", statusCode);
     }
 }

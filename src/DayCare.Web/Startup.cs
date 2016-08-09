@@ -1,7 +1,4 @@
-﻿
-
-
-namespace DayCare.Web
+﻿namespace DayCare.Web
 {
     using System.Threading.Tasks;
     using System;
@@ -78,6 +75,7 @@ namespace DayCare.Web
             });
 
             services.AddTransient<IDayCareService, DayCareService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -120,7 +118,7 @@ namespace DayCare.Web
                 CookieSecure = CookieSecurePolicy.SameAsRequest,
 
                 LoginPath = new PathString(Constants.LoginPath),
-                AccessDeniedPath = new PathString(Constants.DeniedPath), //TODO: Addd a denied path
+                AccessDeniedPath = new PathString(Constants.DeniedPath), 
 
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true
@@ -137,25 +135,27 @@ namespace DayCare.Web
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false
             });
-                
+
             app.UseGitHubAuthentication(opts =>
-            {                
-                opts.SignInScheme = Constants.TempCookieMiddlewareScheme;               
+            {
+                opts.SignInScheme = Constants.TempCookieMiddlewareScheme;
                 opts.ClientId = "273d11a9b275ab715981";
                 opts.ClientSecret = "5cfe1f7beaf998cc0cf0f0dc81dfc3289b31b794";
             });
 
             app.UseClaimsTransformation(ctx =>
             {
-                var claims = new[]
+                if (ctx.Principal.Identity.IsAuthenticated)
                 {
-                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Role, "Attendee")
-                };
+                    var claims = new[]
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+                        new Claim(ClaimTypes.Role, "Attendee")
+                    };
 
-                var id = new ClaimsIdentity(claims, "COTB");
-                ctx.Principal.AddIdentity(id);
-
+                    var id = new ClaimsIdentity(claims, "COTB");
+                    ctx.Principal.AddIdentity(id);
+                }
                 return Task.FromResult(ctx.Principal);
             });
 

@@ -42,11 +42,7 @@ namespace DayCare.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> TimeLine(int id)
-        {
-            var child = await _dayCareService.GetChildAsync(id);
-            return View(child);
-        }
+        public async Task<IActionResult> TimeLine(int id) => View(await _dayCareService.GetChildAsync(id));
 
         [HttpGet]
         public async Task<IActionResult> AddNote(int childId)

@@ -80,38 +80,6 @@
             ModelState.AddModelError("", "Login Failed");
             return View("Login");
         }
-        [HttpPost]
-        public IActionResult GitHubSignin()
-        {
-            var callbackUrl = this.Url.Action(nameof(SecurityController.GitHubCallback), "Security");
-            return Challenge(new AuthenticationProperties { RedirectUri = callbackUrl, }, GitHubAuthenticationDefaults.AuthenticationScheme);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GitHubCallback()
-        {
-            var temp = await HttpContext.Authentication.AuthenticateAsync(Constants.TempCookieMiddlewareScheme);
-            if (temp == null)
-            {
-                // oh oh...... :(
-                return RedirectToAction(nameof(Login));
-            }
-
-            // Login Github user as Admin
-            var staffAdmin = await _dayCareService.GetStaffMemberAsync("admin");
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, staffAdmin.Id.ToString()),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Name, temp.Claims.SingleOrDefault(s=> s.Type == "urn:github:name")?.Value)
-            };
-
-            var identity = new ClaimsIdentity(claims, "Local");
-
-            await HttpContext.Authentication.SignInAsync(Constants.AppCookieMiddlewareScheme, new ClaimsPrincipal(identity));
-            await HttpContext.Authentication.SignOutAsync(Constants.TempCookieMiddlewareScheme);
-            return RedirectToAction(nameof(StaffController.Index), "Staff");
-        }
 
         private async Task<IActionResult> SignInGuardian(LoginViewModel loginViewModel, string returnUrl)
         {
@@ -139,10 +107,45 @@
                     return RedirectToAction("Index", "Home");
                 }
 
-                return new LocalRedirectResult(returnUrl);
+                return LocalRedirect(returnUrl);
             }
+
             ModelState.AddModelError("", "Login Failed");
             return View("Login");
+        }
+
+        [HttpPost]
+        public IActionResult GitHubSignin()
+        {
+            var callbackUrl = this.Url.Action(nameof(GitHubCallback), "Security");
+            return Challenge(new AuthenticationProperties { RedirectUri = callbackUrl, }, GitHubAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GitHubCallback()
+        {
+            var temp = await HttpContext.Authentication.AuthenticateAsync(Constants.TempCookieMiddlewareScheme);
+            if (temp == null)
+            {
+                // oh oh...... :(
+                return RedirectToAction(nameof(Login));
+            }
+
+            // Login Github user as Admin
+            var staffAdmin = await _dayCareService.GetStaffMemberAsync("admin");
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, staffAdmin.Id.ToString()),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Name, temp.Claims.SingleOrDefault(s=> s.Type == "urn:github:name")?.Value)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Local");
+
+            await HttpContext.Authentication.SignInAsync(Constants.AppCookieMiddlewareScheme, new ClaimsPrincipal(identity));
+            await HttpContext.Authentication.SignOutAsync(Constants.TempCookieMiddlewareScheme);
+
+            return RedirectToAction(nameof(StaffController.Index), "Staff");
         }
 
         [HttpPost]

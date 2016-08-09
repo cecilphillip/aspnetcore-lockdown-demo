@@ -1,5 +1,4 @@
-﻿
-namespace DayCare.Web.Requirements
+﻿namespace DayCare.Web.Requirements
 {
     using Microsoft.AspNetCore.Authorization;
 

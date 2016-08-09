@@ -33,11 +33,9 @@
     </div>
 </div>
 
-
 <div class="section row" style="margin-bottom: 40px">
     <div class="col s12">
         <div class="l-main">
-
             <div class="page-header">
                 <h5>All the Day Care Children</h5>
             </div>
@@ -47,24 +45,17 @@
             </div>
             <div class="child-grid">
                 <div class="row">
-
                     @foreach (var child in Model.Children)
                     {
-
                         <div class="child-cell col s6 m3">
                             <a asp-controller="Staff" asp-action="TimeLine" asp-route-id="@child.Id">
                                 <i class="material-icons dp48">perm_identity</i>
                                 <span>@($"{child.FirstName} {child.LastName}")</span>
                             </a>
                         </div>
-
                     }
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
-
-

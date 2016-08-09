@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize(Policy = Constants.GuardianPolicyName)]
+    [Authorize (Policy = Constants.GuardianPolicyName)]
     public class HomeController : Controller
     {
         private readonly IDayCareService _dayCareService;
@@ -20,21 +20,17 @@
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var idClaim = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var id = User.Identities.SingleOrDefault(i => i.AuthenticationType == "Local");
+            var idClaim = id?.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
             var g = await _dayCareService.GetGuardianAsync(int.Parse(idClaim.Value));
             return View(g);
         }
 
-        public IActionResult Second()
-        {
-            return View();
-        }
+        public IActionResult Second() => View();
+        
 
         [HttpGet]
-        public async Task<IActionResult> TimeLine(int id)
-        {
-           var child = await _dayCareService.GetChildAsync(id);
-            return View(child);
-        }
+        public async Task<IActionResult> TimeLine(int id) => View(await _dayCareService.GetChildAsync(id));        
     }
 }
