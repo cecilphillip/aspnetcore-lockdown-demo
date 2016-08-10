@@ -140,7 +140,7 @@
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false
             });
-
+            
             app.UseGitHubAuthentication(opts =>
             {
                 opts.SignInScheme = Constants.TempCookieMiddlewareScheme;

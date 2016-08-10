@@ -1,10 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
-namespace DayCare.Web.Models
+﻿namespace DayCare.Web.Models
 {
+
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
+
     public class DayCareContext : DbContext
     {
         public virtual DbSet<Guardian> Guardians { get; set; }
@@ -57,6 +57,7 @@ namespace DayCare.Web.Models
 
         private void Seed()
         {
+            #region Family Info
             // Smith Family
             var john = new Guardian { Email = "john@smith.com", FirstName = "John", LastName = "Smith" };
             var jane = new Guardian { Email = "jane@smith.com", FirstName = "Jane", LastName = "Smith" };
@@ -85,7 +86,8 @@ namespace DayCare.Web.Models
                 billy, bonnie,
                 ellie, evan
             };
-
+            #endregion
+      
             // Staff
             var dale = new Staff { FirstName = "Dale", LastName = "King", Email = "dale@daycare.edu" };
             var rachel = new Staff { FirstName = "Rachel", LastName = "Turner", Email = "rachel@daycare.edu" };

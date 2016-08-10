@@ -23,8 +23,13 @@
             var id = User.Identities.SingleOrDefault(i => i.AuthenticationType == "Local");
             var idClaim = id?.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
-            var g = await _dayCareService.GetGuardianAsync(int.Parse(idClaim.Value));
-            return View(g);
+            if (idClaim == null)
+            {
+                return Challenge(Constants.AppCookieMiddlewareScheme);
+            }
+
+            var guardian = await _dayCareService.GetGuardianAsync(int.Parse(idClaim.Value));
+            return View(guardian);
         }
 
         public IActionResult Second() => View();
