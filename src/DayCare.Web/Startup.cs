@@ -33,6 +33,11 @@
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets();
+            }
+
             Configuration = builder.Build();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -118,7 +123,7 @@
                 CookieSecure = CookieSecurePolicy.SameAsRequest,
 
                 LoginPath = new PathString(Constants.LoginPath),
-                AccessDeniedPath = new PathString(Constants.DeniedPath), 
+                AccessDeniedPath = new PathString(Constants.DeniedPath),
 
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true
@@ -139,8 +144,8 @@
             app.UseGitHubAuthentication(opts =>
             {
                 opts.SignInScheme = Constants.TempCookieMiddlewareScheme;
-                opts.ClientId = "273d11a9b275ab715981";
-                opts.ClientSecret = "5cfe1f7beaf998cc0cf0f0dc81dfc3289b31b794";
+                opts.ClientId = Configuration["GitHub:ClientId"];
+                opts.ClientSecret = Configuration["GitHub:SecretKey"];
             });
 
             app.UseClaimsTransformation(ctx =>
