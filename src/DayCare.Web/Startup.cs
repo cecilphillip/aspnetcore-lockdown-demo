@@ -57,6 +57,8 @@
 
                 options.AddPolicy(Constants.StaffPolicyName, policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Staff", "Admin"));
                 //options.AddPolicy("Staff", policyBuilder => policyBuilder.RequireRole("Staff"));
+
+                options.AddPolicy(Constants.NoUnclePolicyName, policyBuilder => policyBuilder.AddRequirements(new ViewTimeLineRequirement()));
             });
 
             services.AddTransient<IAuthorizationHandler, AssignedStaffAddNoteHandler>();

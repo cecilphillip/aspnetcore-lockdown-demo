@@ -36,6 +36,7 @@
         
 
         [HttpGet]
+        [Authorize(Policy = Constants.NoUnclePolicyName)]
         public async Task<IActionResult> TimeLine(int id) => View(await _dayCareService.GetChildAsync(id));        
     }
 }

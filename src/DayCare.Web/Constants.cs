@@ -11,6 +11,8 @@
         public const string GitHubCallBackPath = "/Security/GitHubCallback";
 
         public const string GuardianPolicyName = "Guardian";
-        public const string StaffPolicyName = "Staff";        
+        public const string StaffPolicyName = "Staff";
+
+        public const string NoUnclePolicyName = "NoUncle";
     }
 }
