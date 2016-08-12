@@ -10,6 +10,7 @@ Then add your keys to the secrets manager with the following commands
 dotnet user-secrets set GitHub:ClientId YOUR_SECRET
 dotnet user-secrets set GitHub:SecretKey YOUR_KEY
 ```
+You can also just remove the Github middleware from [Startup.cs](/src/DayCare.Web/Startup.cs#L146).
 Covered in the samples
 -------------
 
