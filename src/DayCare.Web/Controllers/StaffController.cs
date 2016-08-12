@@ -62,6 +62,7 @@ namespace DayCare.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNote(NoteModelViewModel model)
         {
             if (!await _dayCareService.ChildExistsAsync(model.ChildId))

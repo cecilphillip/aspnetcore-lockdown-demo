@@ -28,6 +28,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -49,6 +50,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult GitHubSignin()
         {
             var callbackUrl = this.Url.Action(nameof(GitHubCallback), "Security");
@@ -83,6 +85,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.Authentication.SignOutAsync(Constants.AppCookieMiddlewareScheme);

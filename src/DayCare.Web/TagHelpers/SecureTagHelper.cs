@@ -24,7 +24,7 @@
                 var user = ViewContext.HttpContext.User;
                 var roles = Roles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
-                var allowed = roles.Any(r => user.IsInRole(r));
+                var allowed = roles.Any(r => user.IsInRole(r.Trim()));
                 if (allowed)
                 {
                     base.Process(context, output);
